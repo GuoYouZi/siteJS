@@ -75,3 +75,15 @@ function ChangeDate(sDate1) {
         return new Date(sDate1);
     }
 }
+
+
+//解决手机物理按键返回不刷新页面的问题------------
+    var isPageHide = false;
+    window.addEventListener('pageshow', function (event) {
+        if (isPageHide || event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+            location.reload();
+        }
+    });
+    window.addEventListener('pagehide', function () {
+        isPageHide = true;
+    });
