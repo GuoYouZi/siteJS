@@ -87,3 +87,15 @@ function ChangeDate(sDate1) {
     window.addEventListener('pagehide', function () {
         isPageHide = true;
     });
+
+//判断是企业微信还是个人微信
+    function getAppName() {
+        var appName = '';
+        var ua = window.navigator.userAgent.toLowerCase();
+        if ((ua.match(/MicroMessenger/i) == 'micromessenger') && (ua.match(/wxwork/i) == 'wxwork') && (ua.match(/windows/i) != 'windows')) {
+            appName = "QYWX";
+        } else if (ua.match(/micromessenger/i) == 'micromessenger') {
+            appName = "WX";
+        }
+        return appName;
+    }
