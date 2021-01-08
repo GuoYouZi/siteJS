@@ -29,3 +29,49 @@ function getUrlParam(name) {
     if (r != null) return unescape(r[2]); return ""; //返回参数值
 }
 
+//两个日期的计算，返回昨天，前天，*天之前，*小时前，*分前，*秒前
+function DateDiff(sDate1, sDate2) { //sDate1和sDate2是字符串 yyyy-MM-dd hh:mm:ss格式,另外sDate1>=sDate2 
+    var oDate1, oDate2, iDays, ihours, iminutes, iseconds;
+    oDate1 = ChangeDate(sDate1);
+    oDate2 = ChangeDate(sDate2);
+    var timeSpan = {};
+    var TotalMilliseconds = Math.abs(oDate1 - oDate2);//相差的毫秒数
+    timeSpan.Days = parseInt(TotalMilliseconds / 1000 / 60 / 60 / 24);
+    if (timeSpan.Days > 0) {
+        if (timeSpan.Days > 7) {
+            return oDate2;
+        } else if (timeSpan.Days == 2) {
+            return "前天";
+        } else if (timeSpan.Days == 1) {
+            return "昨天";
+        } else {
+            return timeSpan.Days + "天之前";
+        }
+    }
+    timeSpan.TotalHours = parseInt(TotalMilliseconds / 1000 / 60 / 60);
+    timeSpan.Hours = timeSpan.TotalHours % 24;
+    if (timeSpan.Hours > 0) {
+        return timeSpan.Hours + "小时前";
+    }
+    timeSpan.TotalMinutes = parseInt(TotalMilliseconds / 1000 / 60);
+    timeSpan.Minutes = timeSpan.TotalMinutes % 60;
+    if (timeSpan.Minutes > 0) {
+        return timeSpan.Minutes + "分钟前";
+    }
+    timeSpan.TotalSeconds = parseInt(TotalMilliseconds / 1000);
+    timeSpan.Seconds = timeSpan.TotalSeconds % 60;
+    if (timeSpan.Seconds > 0) {
+        return timeSpan.Seconds + "秒前";
+    }
+    return "刚刚";
+}
+
+function ChangeDate(sDate1) {
+    if (sDate1.toString().indexOf("-") > 0) {
+        var aDate = sDate1.split("-");
+        var bDate = aDate[2].split(" ");
+        return new Date(aDate[1] + '-' + bDate[0] + '-' + aDate[0] + " " + bDate[1]);
+    } else {
+        return new Date(sDate1);
+    }
+}
