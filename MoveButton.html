@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>悬浮可移动按钮</title>
+    <style type="text/css">
+        /* button {
+            position: fixed;
+            top: 80%;
+            left: 80%;
+            width: 150px;
+            height: 150px;
+            font-size: 30px;
+            color: #fff;
+            border-radius: 50%;
+            background-color: #03A9F4;
+            border: 1px solid #ffffff;
+            border-style: outset;
+        } */
+        .FloatingButton{
+            position: fixed;
+            top: 80%;
+            left: 75%;
+            width: 150px;
+            height: 150px;
+            font-size: 30px;
+            color: #fff;
+            border-radius: 50%;
+            background-color: #03A9F4;
+            border: 2px dotted #ffffff;
+            text-align:center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="xuan">
+        <button class="FloatingButton"  id="MotionButton">可拖拽</button>
+    </div>
+</body>
+<script>
+    window.onload = function () {
+        var flag = 0;
+        var motion = document.getElementById('MotionButton');
+        var disX, disY;    //元素左/上 ‘半径’
+        var moveX, moveY;
+        var L, T;    //可移动范围
+        var starX, starY;
+        var starXEnd, starYEnd;
+
+        motion.addEventListener('touchstart', function (e) {
+            flag = 0;
+            e.preventDefault(); //阻止触摸按钮时页面滚动和缩放
+            //获取元素左/上边到中心（clientX,clientY）的距离
+            disX = e.touches[0].clientX - this.offsetLeft;
+            disY = e.touches[0].clientY - this.offsetTop;
+
+            //手指按下屏幕时的坐标
+            starX = e.touches[0].clientX;
+            starY = e.touches[0].clientY;
+        });
+        motion.addEventListener('touchmove', function (e) {
+            flag = 1;
+            L = e.touches[0].clientX - disX;
+            T = e.touches[0].clientY - disY;
+            //移动时当前位置和起始位置的差值
+            starXEnd = e.touches[0].clientX - starX;
+            starYEnd = e.touches[0].clientY - starY;
+
+            if (L < 0) {
+                L = 0; //限制拖拽的X范围，不能拖出屏幕
+            } else if (L > document.documentElement.clientWidth - this.offsetWidth) {
+                L = document.documentElement.clientWidth - this.offsetWidth;
+            }
+            if (T < 0) {
+                T = 0;  //限制拖拽的Y范围，不能拖出屏幕
+            } else if (T > document.documentElement.clientHeight - this.offsetHeight) {
+                T = document.documentElement.clientHeight - this.offsetHeight;
+            }
+
+            moveX = L + 'px';
+            moveY = T + 'px';
+            this.style.left = moveX;
+            this.style.top = moveY;
+        });
+        motion.addEventListener('touchend', function (e) {
+            if (flag === 0) {
+                e.preventDefault();
+                /*
+                点击处理事件.....
+                */
+            }
+        });
+    };
+</script>
+</html>
