@@ -99,3 +99,78 @@ function ChangeDate(sDate1) {
         }
         return appName;
     }
+    
+//获取范围日期--顺序
+function GetRangDate() {
+    var d1 = "2018/01/01";
+    d1 = new Date(d1.replace(/-/g, '/'));
+    var d2 = new Date();
+    var M1 = d1.getMonth();
+    var M2 = d2.getMonth();
+    var Y = d2.getFullYear() - d1.getFullYear();
+    var M = Y * 12 + M2 - M1+12;
+    var year = "2018";
+    var month = "0";
+    var html = "";
+    for (var i = 1; i <= M; i++) {
+        if (i % 12 == 0 && i != 1) {
+            month = "0";
+            var value = year + "-12";
+            html += "<option value='" + value + "'>" + value + "</option>";
+            year = Number(year) + 1;
+        }
+        else {
+            month = Number(month) + 1;
+            if (i % 12 < 10) {
+                var value = year + "-0" + month;
+            }
+            else {
+                var value = year + "-" + month;
+            }
+            html += "<option value='" + value + "'>" + value + "</option>";
+        }
+    }
+    $("#relationUnitAndYearMonth").append(html);
+    if (M2 < 10) {
+        M2 = "0" + M2;
+    }
+    $("#relationUnitAndYearMonth").val(d2.getFullYear() + "-" + M2);
+}
+//获取范围日期--倒序
+function GetRangDateDesc() {
+    var d1 = "2018/01/01";
+    d1 = new Date(d1.replace(/-/g, '/'));
+    var d2 = new Date();
+    var M1 = d1.getMonth()+1;
+    var M2 = d2.getMonth()+1;
+    var Y = d2.getFullYear() - d1.getFullYear();
+    var M = Y * 12 + M2 - M1 + M2;
+    var year = d2.getFullYear();
+    var month = d2.getMonth()+1;
+    var html = "";
+    for (var i = M; i >= 1; i--) {
+        if (i % 12 == 0) {
+            month = "11";
+            var value = year + "-12";
+            html += "<option value='" + value + "'>" + value + "</option>";
+        }
+        else {
+            if (i % 12  <= 9) {
+                var value = year + "-0" + month;
+            }
+            else {
+                var value = year + "-" + month;
+            }
+            html += "<option value='" + value + "'>" + value + "</option>";
+            month = Number(month) - 1;
+            if ((i-1) % 12 == 0) {
+                year = Number(year) - 1;
+            }
+        }
+    }
+    $("#relationUnitAndYearMonth").append(html);
+    if (M2 < 10) {
+        M2 = "0" + M2;
+    }
+    $("#relationUnitAndYearMonth").val(d2.getFullYear() + "-" + M2);
+}
